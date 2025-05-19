@@ -5,19 +5,19 @@ from azure.ai.inference import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
-# === CONFIGURATION ===
+# API
 AZURE_API_KEY = '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'  # Replace with your Azure token
 AZURE_ENDPOINT = "https://models.github.ai/inference"
 AZURE_MODEL = "openai/gpt-4.1"
 YOUTUBE_API_KEY = "AIzaSyB3wotkvjJCiRB3j29GopwAvzgsLnYgaQY"  # Replace with your YouTube Data API key
 
-# === INIT AZURE OPENAI CLIENT ===
+# AZURE OPENAI
 client = ChatCompletionsClient(
     endpoint=AZURE_ENDPOINT,
     credential=AzureKeyCredential(AZURE_API_KEY),
 )
 
-# === YouTube Video Search ===
+# YouTube Video Search
 def get_youtube_videos(api_key, query, max_results=2):
     url = "https://www.googleapis.com/youtube/v3/search"
     params = {
@@ -72,16 +72,16 @@ def extract_day_tasks(text):
             day_tasks.append((day, task))
     return day_tasks
 
-# === Streamlit UI ===
+# Streamlit
 st.set_page_config(page_title="Learning Roadmap Generator", layout="wide")
-st.title("📘 Personalized Learning Roadmap Generator with YouTube Support")
+st.title(" Personalized Learning Roadmap Generator with YouTube Support")
 
 with st.sidebar:
-    st.header("📌 Settings")
+    st.header(" Settings")
     topic = st.text_input("Enter your learning topic", value="AI/ML")
     num_days = st.slider("Select number of days", min_value=1, max_value=60, value=30)
     max_videos = st.slider("YouTube videos per day", min_value=1, max_value=5, value=2)
-    generate_button = st.button("🚀 Generate Roadmap")
+    generate_button = st.button(" Generate Roadmap")
 
 if generate_button:
     if not topic.strip():
@@ -92,15 +92,15 @@ if generate_button:
             day_tasks = extract_day_tasks(roadmap_text)
 
         if not day_tasks:
-            st.error("❌ Couldn't parse roadmap days from the response.")
-            st.markdown("### 🧾 Raw Response from Azure OpenAI:")
+            st.error(" Couldn't parse roadmap days from the response.")
+            st.markdown("###  Raw Response from Azure OpenAI:")
             st.code(roadmap_text)
         else:
-            st.success(f"✅ {len(day_tasks)}-Day Roadmap for: **{topic}**")
+            st.success(f" {len(day_tasks)}-Day Roadmap for: **{topic}**")
             for day, task in day_tasks:
                 with st.expander(f"{day}: {task}"):
                     st.markdown(f"**Task**: {task}")
-                    with st.spinner(f"🔍 Searching YouTube for: {task}"):
+                    with st.spinner(f" Searching YouTube for: {task}"):
                         videos = get_youtube_videos(YOUTUBE_API_KEY, task, max_results=max_videos)
                         if videos:
                             for title, link in videos:
